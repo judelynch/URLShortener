@@ -1,0 +1,15 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Url Shortener </h1>
+    <form method="post">
+        <input type="text" name="Url" value="" />
+        <input id="Button1" type="submit" value="Create" />       
+    </form>     
+    <h1  class="display-4">@ViewData["returnedUrl"]  </h1>
+    
+</div>
