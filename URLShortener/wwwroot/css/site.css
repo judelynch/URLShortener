@@ -1,7 +1,25 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    background-color: #00a6fb;
+    padding-top 200px;
+}
+header {
+    height:200px;
+}
+body {
+    padding-top 200px;
+    color:white;
+    margin-bottom: 60px;
+    background-color: #00a6fb;
+    width: 100%;
+    margin: 200 auto;
+    text-align-last:center;
 }
 
+div {
+    width: 100%;
+
+}
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -14,5 +32,10 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #00a6fb;
+    width:100%;
+}
+div {
+    width:100%;
 }

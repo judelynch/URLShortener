@@ -8,9 +8,6 @@ builder.Services.AddEndpointsApiExplorer();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-
-
-
 builder.Services.AddDbContext<URLShortenerContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -27,7 +24,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();

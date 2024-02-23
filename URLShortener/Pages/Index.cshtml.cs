@@ -10,8 +10,8 @@ namespace URLShortener.Pages
 
         private readonly IURLShortenerService _smallUrlService;
         private readonly ILogger<IndexModel> _logger;
-        private string url { get; set; }
-        public string returnedUrl {get;set;}
+       
+
 
         public IndexModel(IURLShortenerService service, ILogger<IndexModel> logger)
         {
@@ -21,12 +21,10 @@ namespace URLShortener.Pages
 
 
         public void OnPost()
-        {
-            url = Request.Form[nameof(Url)];
+        {  
+            
+            string url = Request.Form[nameof(Url)];
 
-
-            if (url != null)
-            {
                 try
                 {
                     ViewData["returnedUrl"] = _smallUrlService.PostUrl(url);
@@ -35,11 +33,7 @@ namespace URLShortener.Pages
                 {
                     _logger.LogError(ex.Message);
                 }
-            }
-            else
-            { 
-            
-            }
+
             
         }
     }

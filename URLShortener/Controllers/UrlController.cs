@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using URLShortener.Services;
 
-namespace URLShortener.Controller
+
+namespace URLShortener.Controllers
 {
-    [ApiController]
+  
     [Route("[controller]")]
-    public class UrlController : ControllerBase
+    public class UrlController : Controller
     {
         private readonly IURLShortenerService _smallUrlService;
 
@@ -19,7 +21,15 @@ namespace URLShortener.Controller
         public RedirectResult Get(Guid url)
         {
             //Get Url and Redirect to it
-            return Redirect(_smallUrlService.GetUrl(url));
+            try
+            {
+                return Redirect(_smallUrlService.GetUrl(url));
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = "404 The Url Was Not Found Would Like To Try Again Or Make A New One";
+                return Redirect("/Index");
+            }
 
 
         }

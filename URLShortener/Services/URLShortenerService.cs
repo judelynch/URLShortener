@@ -6,27 +6,41 @@ namespace URLShortener.Services
     public class URLShortenerService : IURLShortenerService
     {
         private readonly IURLShortenerRepo _uRLShortenerRepo;
+        private readonly ILogger<URLShortenerService> _logger;
 
-        public URLShortenerService(IURLShortenerRepo uRLShortenerRepo)
+        public URLShortenerService(IURLShortenerRepo uRLShortenerRepo, 
+                                   ILogger<URLShortenerService> logger)
         {
             _uRLShortenerRepo = uRLShortenerRepo;
+            _logger = logger;
         }
 
         public string GetUrl(Guid UrlId)
         {
-            // use fluent validation 
 
-            StringGenerator sGenerator = new StringGenerator();
+            StringConvert StringConvertor = new StringConvert();
 
             try
             {
                 //Get Url From Database
                 URLShortenerViewModel CodedUrl = _uRLShortenerRepo.GetUrl(UrlId);
+                //Check if its null
+                if (CodedUrl == null)
+                {
+                    //throw not found
+                    throw new Exception("404");
+                }
                 //Decode and Return Long Url
-                return sGenerator.DecodeString(CodedUrl.Url);
+                return StringConvertor.DecodeString(CodedUrl.Url);
             }
-            catch 
+            catch(Exception ex)
             {
+                //Only log if not a 404.
+                if (ex.Message != "404")
+                {
+                    //Log Error
+                    _logger.LogError(ex.Message);
+                }
                throw;
             }
         }
@@ -38,50 +52,58 @@ namespace URLShortener.Services
             if (valUrl.IsValid(url))
             {
 
-                StringGenerator sGenerator = new StringGenerator();
-                string encodedUrl = "";
+                StringConvert StringConvertor = new StringConvert();
+                string EncodedUrl = "";
                 Guid UrlId = Guid.Empty;
 
                 try
                 {
                     // encode url 
-                    encodedUrl = sGenerator.EncodeString(url);
+                    EncodedUrl = StringConvertor.EncodeString(url);
                 }
                 catch (Exception ex)
                 {
-                    return ex.Message;
+                    //Log Error
+                    _logger.LogError(ex.Message);
+                    throw;
                 }
 
                 try
                 {
                     //Generat Id 
-                    UrlId = GuidGenerator.Create(encodedUrl);
+                    UrlId = GuidGenerator.Create(EncodedUrl);
                 }
                 catch (Exception ex)
                 {
-                    return ex.Message;
+                    //Log Error
+                    _logger.LogError(ex.Message);
+                    throw;
                 }
 
                 try
                 {
                     // Check if it already exists. 
-                    URLShortenerViewModel currentUrl = _uRLShortenerRepo.GetUrl(UrlId);
-                    if (currentUrl == null)
+                    URLShortenerViewModel CurrentUrl = _uRLShortenerRepo.GetUrl(UrlId);
+                    if (CurrentUrl == null)
                     {
                         //Add if not exists 
-                        _uRLShortenerRepo.SaveSmallUrl(new URLShortenerViewModel(UrlId, encodedUrl));
+                        _uRLShortenerRepo.SaveUrl(new URLShortenerViewModel(UrlId, EncodedUrl));
                     }
+
+                    return "https://localhost:7056/Url?url=" + UrlId.ToString();
                 }
                 catch (Exception ex)
                 {
-                    return ex.Message;
+                    //Log Error
+                    _logger.LogError(ex.Message);
+                    throw;
                 }
                 // return "small" Url
-                return "https://localhost:7056/Url?url=" + UrlId.ToString();
+                
             }
             else 
             {
-                return "URL is Invalid";
+                return "Please enter a valid URL!";
             }
         }
     }
