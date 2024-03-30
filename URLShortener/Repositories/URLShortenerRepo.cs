@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using URLShortener.Data;
+﻿using URLShortener.Data;
 using URLShortener.Models;
 
 namespace URLShortener.Repositories
@@ -15,25 +14,25 @@ namespace URLShortener.Repositories
             _logger = logger;
         }
 
-        public URLShortenerViewModel GetUrl(Guid SmallUrlId)
+        public URLStringIdViewModel GetUrl(string SmallUrlId)
         {
             try
             {
-                return _context.Urls.Where(c => c.Id == SmallUrlId).FirstOrDefault();
+                return _context.UrlStrings.Where(c => c.Id == SmallUrlId).FirstOrDefault();
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 throw;
             }
         }
 
-        public bool SaveUrl(URLShortenerViewModel Entity)
+        public bool SaveUrl(URLStringIdViewModel Entity)
         {
             using var transaction = _context.Database.BeginTransaction();
             try
             {
-                _context.Urls.Add(Entity);
+                _context.UrlStrings.Add(Entity);
                 _context.SaveChanges();
                 transaction.Commit();
                 return true;

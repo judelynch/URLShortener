@@ -2,7 +2,7 @@
 {
     public interface IURLShortenerService
     {
-        public string GetUrl(Guid url);
+        public string GetUrl(string url);
 
         public string PostUrl(string url);
     }

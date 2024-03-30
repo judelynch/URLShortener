@@ -3,7 +3,7 @@ using System.Text;
 
 namespace URLShortener.Services
 {
-    public class GuidGenerator
+    public class StringGenerator
     {
         private static string GetMd5Hash(MD5 md5Hash, string input)
         {
@@ -26,16 +26,16 @@ namespace URLShortener.Services
             return sBuilder.ToString();
         }
 
-        public static Guid Create(string input)
+        public static string Create(string input)
         {
-            Guid result;
+            string result;
 
             using (MD5 mdHash = MD5.Create())
             {
-                string hash = GuidGenerator.GetMd5Hash(mdHash, input);
-                result = new Guid(hash);
+                result = (StringGenerator.GetMd5Hash(mdHash, input));
+
             }
-            return result;
+            return result.Substring(0, 5);
         }
 
 
