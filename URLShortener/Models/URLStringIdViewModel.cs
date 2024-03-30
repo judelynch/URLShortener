@@ -2,15 +2,16 @@
 
 namespace URLShortener.Models
 {
-    public class URLShortenerViewModel
+    public class URLStringIdViewModel
     {
-        public URLShortenerViewModel(Guid id, string url)
+        public URLStringIdViewModel(string id, string url)
         {
             Id = id;
             Url = url;
         }
         [Key]
-        public Guid Id { get; set; }
+        [MaxLength(5)]
+        public string Id { get; set; }
         [Required]
         public string Url { get; set; }
     }

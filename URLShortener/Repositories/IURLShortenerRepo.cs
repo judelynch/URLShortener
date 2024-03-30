@@ -4,7 +4,7 @@ namespace URLShortener.Repositories
 {
     public interface IURLShortenerRepo
     {
-        URLShortenerViewModel GetUrl(Guid smallUrlId);
-        bool SaveUrl(URLShortenerViewModel entity);
+        URLStringIdViewModel GetUrl(string smallUrlId);
+        bool SaveUrl(URLStringIdViewModel entity);
     }
 }

@@ -5,8 +5,8 @@ using URLShortener.Services;
 
 namespace URLShortener.Controllers
 {
-  
-    [Route("[controller]")]
+
+    [ApiController]
     public class UrlController : Controller
     {
         private readonly IURLShortenerService _smallUrlService;
@@ -18,7 +18,8 @@ namespace URLShortener.Controllers
         }
 
         [HttpGet]
-        public RedirectResult Get(Guid url)
+        [Route("{url}")]
+        public RedirectResult Get(string url)
         {
             //Get Url and Redirect to it
             try
